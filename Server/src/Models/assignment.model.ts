@@ -14,9 +14,10 @@ const assignmentSchema = new mongoose.Schema<AssignmentTypes>({
     },
     timestamp:{
         type:Date,
-        required:true   
+        required:true,
+        default:Date.now  
     },
-    status:{
+    status:{    
         type:String,
         enum:["success","failed"]
     },
@@ -24,7 +25,7 @@ const assignmentSchema = new mongoose.Schema<AssignmentTypes>({
         type:String
     }
 
-})
+},{timestamps:true})
 
 const Assignment = model<AssignmentTypes>('Assignment',assignmentSchema)
 

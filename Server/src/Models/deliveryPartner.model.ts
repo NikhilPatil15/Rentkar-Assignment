@@ -26,8 +26,6 @@ const deliveryPartnerSchema = new mongoose.Schema<DeliveryPartnerTypes>(
     },
     currentLoad: {
       type: Number,
-      max: 3,
-      min: 0,
       default:0
     },
     areas: {
