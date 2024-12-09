@@ -17,7 +17,7 @@ const createOrder = asyncHandler(async (req: Request, res: Response) => {
 
   /* Check if all the fields are given or not  */
   if (
-    [customer, area, items, scheduledFor].some((value) => value.trim() === "")
+    [ area, scheduledFor].some((value) => value?.trim() === "")
   ) {
     throw new ErrorResponse(401, "All fields are necessary!");
   }

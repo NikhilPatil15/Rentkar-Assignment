@@ -8,7 +8,7 @@ const orderSchema = new mongoose.Schema<OrderInterface>(
     orderNumber: {
       type: String,
       unique: true,
-      required: true,
+      required:true
     },
     customer: {
       name: {
@@ -16,7 +16,7 @@ const orderSchema = new mongoose.Schema<OrderInterface>(
         required: true,
       },
       phone: {
-        type: Number,
+        type: String,
         required: true,
       },
       address: {
@@ -60,7 +60,7 @@ const orderSchema = new mongoose.Schema<OrderInterface>(
   }
 );
 
-orderSchema.pre("save", async function (next) {
+orderSchema.pre("validate", async function (next) {
   const order = this as OrderInterface;
 
   if (!order.isNew) return next();

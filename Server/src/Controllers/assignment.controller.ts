@@ -119,6 +119,49 @@ const assignOrder = asyncHandler(async (req: Request, res: Response) => {
   );
 });
 
+const getAssignmentMetrics = async (req: Request, res: Response) => {
+  try {
+
+    const assignments = await Assignment.find();
+
+    let successCount = 0;
+    let failureCount = 0;
+    let totalTime = 0;
+    const failureReasons: { reason: string; count: number }[] = [];
+
+ 
+    for (let assignment of assignments) {
+      if (assignment.status === "success") {
+        successCount++;
+        totalTime += new Date().getTime() - new Date(assignment.timestamp).getTime(); 
+      } else {
+        failureCount++;
+        const reason = assignment.reason || "Unknown";
+        const existingReason = failureReasons.find(r => r.reason === reason);
+        if (existingReason) {
+          existingReason.count++;
+        } else {
+          failureReasons.push({ reason, count: 1 });
+        }
+      }
+    }
+
+   
+    const successRate = successCount / (successCount + failureCount);
+    const averageTime = successCount > 0 ? totalTime / successCount : 0; 
+
+    res.status(200).json({
+      totalAssigned: successCount + failureCount,
+      successRate,
+      averageTime,
+      failureReasons,
+    });
+  } catch (error) {
+    res.status(500).json({ message: "Failed to calculate metrics", error });
+  }
+};
+
 export{
-  assignOrder
+  assignOrder,
+  getAssignmentMetrics
 }

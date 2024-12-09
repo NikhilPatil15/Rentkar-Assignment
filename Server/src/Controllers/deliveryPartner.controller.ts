@@ -3,13 +3,12 @@ import { asyncHandler } from "../Utils/asyncHandler";
 import { ErrorResponse } from "../Utils/ErrorResponse";
 import DeliveryPartner from "../Models/deliveryPartner.model";
 import { SuccessResponse } from "../Utils/SuccessResponse";
-import { CallbackError } from "mongoose";
 
 const createDeliveryPartner = asyncHandler(async (req: Request, res: Response) => {
     const { name, email, phone, areas, shift } = req.body;
 
     if (
-      [name, email, phone, areas, shift].some((value) => value.trim() === "")
+      [name, email, phone].some((value) => value.trim() === "")
     ) {
       throw new ErrorResponse(400, "All fields are required!");
     }

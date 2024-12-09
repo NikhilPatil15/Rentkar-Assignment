@@ -1,10 +1,15 @@
 import express, { Request, Response } from "express";
 import dotenv from "dotenv";
 import cors from "cors";
+import { connectDatabase } from "./Database/databaseConnection";
 
 const app = express();
 
 dotenv.config({ path: "./.env" });
+
+connectDatabase().then(() => {
+  console.log("Database connected successfully!");
+});
 
 app.use(cors({ origin: process.env.CORS_ORIGIN }));
 
